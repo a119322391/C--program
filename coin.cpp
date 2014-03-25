@@ -1,25 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
+int flip(void);
 int main(void){
-    int[2] coinarray = {0};
+    int coinarray[2] = {0};
     int mycoin;
     srand( time( NULL ) );
-    for(int i = 1,i<=50,++i){
+    for(int i = 1;i<=50;++i){
            mycoin = flip();
             if(mycoin == 1){
                     ++coinarray[mycoin];
             }else if(mycoin == 0){
                     ++coinarray[mycoin];
             }else{
-                    printf("bug");
+                    printf("bug\n");
             }
     }
     
     
-    for(int j= 0,j<=1,++j){
-            printf("%d",coinarray[j]);    
+    printf("face\n");
+    printf("frequency\n");
+    for(int j= 0;j<=1;++j){
+            printf("%d\n",coinarray[j]);    
     }
     
     system("pause");
@@ -28,13 +30,13 @@ int main(void){
 }
 int flip(void){
     int coin;
-    coin = 1+(rand()%2);
+    coin = (rand()%2);
     if(coin == 1){
-            printf("heads");
+            printf("heads\n");
     }else if(coin == 0){
-            printf("tails");
+            printf("tails\n");
     }else{
-            printf("none");
+            printf("none\n");
     }
     return coin;
     
