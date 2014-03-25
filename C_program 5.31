@@ -1,40 +1,43 @@
-#include "stdafx.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define SIZE 3
-
-
+int flip(void);
 int main(void){
-	size_t face;
-	unsigned int roll;
-	unsigned frequency[SIZE] = {0};
-
-	srand (time(NULL));
-	
-	printf("%s%17s\n","Face","Frequency");
-
-	for(face = 1; face < SIZE;++face){
-		printf("%s%17s\n",face,frequency[face]);
-	}
+    int coinarray[2] = {0};
+    int mycoin;
+    srand( time( NULL ) );
+    for(int i = 1;i<=50;++i){
+           mycoin = flip();
+            if(mycoin == 1){
+                    ++coinarray[mycoin];
+            }else if(mycoin == 0){
+                    ++coinarray[mycoin];
+            }else{
+                    printf("bug\n");
+            }
+    }
+    
+    
+    printf("  %5s","Heads");
+    printf("  %5s\n","Tails");
+    for(int j= 0;j<=1;++j){
+            printf("%6d%     ",coinarray[j]);    
+    }
+    puts(" ");	
+	system("pause");
+    return 0;
+    
 }
 int flip(void){
-	int roll;
-	int face;
-	int frequency;
-
-	face = 1 + rand() % 2;
-	if(face == 1){
-		printf("heads");
-	}else if(face == 0){
-		printf("tails");
-	}else{
-		printf("none");
-	}
-	return face;
+    int coin;
+    coin = (rand()%2);
+    if(coin == 1){
+            printf("heads\n");
+    }else if(coin == 0){
+            printf("tails\n");
+    }else{
+            printf("none\n");
+    }
+    return coin;
+    
 }
-
-
-
-
-
