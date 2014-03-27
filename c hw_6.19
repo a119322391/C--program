@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+int rolling(void);
+int main(void){
+    int counter[12] = {0};
+    int twodice;
+    srand( time( NULL ) );
+    for(int i = 1;i<=36000;++i){
+           twodice = rolling();
+           counter[twodice] = counter[twodice] + 1;
+           }
+    
+    
+    printf("  %5s","sum");
+    printf("  %5s\n","frequency");
+    for(int j= 0;j<=1;++j){
+            printf("%6d%     ",counter[j]);    
+    }
+    puts(" ");	
+	system("pause");
+    return 0;
+    
+}
+int rolling(void){
+    int dice1;
+    int dice2;
+    int sum;
+    dice1 = 1 + (rand()%6);
+    dice2 = 1 + (rand()*6);
+    sum = dice1 + dice2;
+    return sum;
+}
