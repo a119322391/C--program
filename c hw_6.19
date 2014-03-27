@@ -1,33 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-int rolling(void);
+
+int rollDice(void);
+void printResult(int counter[]);
 int main(void){
-    int counter[12] = {0};
-    int twodice;
+    int re = 0;
+    int dice[13] = {0};
     srand( time( NULL ) );
-    for(int i = 1;i<=36000;++i){
-           twodice = rolling();
-           counter[twodice] = counter[twodice] + 1;
-           }
-    
-    
-    printf("  %5s","sum");
-    printf("  %5s\n","frequency");
-    for(int j= 0;j<=1;++j){
-            printf("%6d%     ",counter[j]);    
+    for(int i = 0; i<=36000; i++){
+            re = rollDice();
+            ++dice[re];
     }
-    puts(" ");	
-	system("pause");
-    return 0;
     
+    
+    
+    printResult(dice);
+    system("pause");
+    return 0;
 }
-int rolling(void){
-    int dice1;
-    int dice2;
-    int sum;
-    dice1 = 1 + (rand()%6);
-    dice2 = 1 + (rand()*6);
-    sum = dice1 + dice2;
+
+int rollDice(void){
+    int dice = 1 + rand()%6;
+    int dice1 = 1 + rand()%6;
+    int sum = dice + dice1;   
     return sum;
+}
+void printResult(int counter[]){
+     printf("%s%11s%19s\n\n%54s\n%54s\n\n","response","frequency","histogram","1   1   2   2","5   0   5   0   5");
+     for(int j = 2; j <= 12; j++){
+            printf(" %6d%   6d ",j ,counter[j]);
+     
+            int stars;
+            int rest;
+            stars = counter[j]/200;
+            rest = counter[j] - stars * 200;
+     
+            for(int h = 2; h <= stars; h++){
+                    printf("%s"," *");
+            }
+            printf("%d",rest);
+            puts("");
+            stars = 0;
+            rest = 0;
+     }
 }
