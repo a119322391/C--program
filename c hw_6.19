@@ -27,9 +27,9 @@ int rollDice(void){
     return sum;
 }
 void printResult(int counter[]){
-     printf("%s%11s%19s\n\n%54s\n%54s\n\n","response","frequency","histogram","1   1   2   2","5   0   5   0   5");
+     printf("%21s%15s%15s\n\n%54s\n%54s\n\n","response","frequency","histogram","1   1   2   2","5   0   5   0   5");
      for(int j = 2; j <= 12; j++){
-            printf(" %6d%   6d ",j ,counter[j]);
+            printf("% 20d%  16d ",j ,counter[j]);
      
             int stars;
             int rest;
@@ -37,11 +37,13 @@ void printResult(int counter[]){
             rest = counter[j] - stars * 200;
      
             for(int h = 2; h <= stars; h++){
-                    printf("%s"," *");
+                    printf("%s","*");
             }
             printf("%d",rest);
             puts("");
             stars = 0;
             rest = 0;
+            
      }
+     puts("                                                                 * = 200");
 }
