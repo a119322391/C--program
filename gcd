@@ -1,0 +1,21 @@
+#include "stdafx.h"
+#include <stdio.h>
+#define size 80
+int main(void){
+
+	 char s[size];
+	 int m;
+	 int n;
+	 puts("enter twoo integer");
+	 scanf_s("%d%d",&m,&n);
+	 sprintf_s(s, "int :%6d\nint :%6d",m,n);
+	 printf(GCD(m,n));
+}
+int GCD(int a, int b){
+	while(b!= 0){
+		int r = m % n;
+		m= n;
+		n = r;
+	}
+	return m;
+}
