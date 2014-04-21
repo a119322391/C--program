@@ -1,0 +1,14 @@
+#include "stdafx.h"
+#include <stdio.h>
+#define size 80
+int main(void){
+
+	 char s[size];
+	 int x;
+	 int y;
+	 puts("enter twoo integer");
+	 scanf_s("%d%d",&x,&y);
+	 sprintf_s(s, "int :%6d\nint :%6d",x,y);
+	 printf("%s\n%s\n","the formatted output stored in array s is:",s);
+}
+int GCD
