@@ -1,21 +1,32 @@
-#include "stdafx.h"
+#include <stdlib.h>
 #include <stdio.h>
 #define size 80
+int GCD(int a, int b);
 int main(void){
-
-	 char s[size];
+     char s[size];
 	 int m;
 	 int n;
-	 puts("enter twoo integer");
-	 scanf_s("%d%d",&m,&n);
-	 sprintf_s(s, "int :%6d\nint :%6d",m,n);
-	 printf(GCD(m,n));
+	 int c;
+     int i = 0;
+     puts("enter two integer");
+	 while (i < size-1&&(c = getchar())!= '\n'){
+           s[i++] = c;      
+     }
+     s[i] = '\0';
+	sscanf(s,"%d%d",&m,&n);
+	 int x = GCD(m,n);
+     printf("%d", x);
+     system("pause");
+     return 0;
 }
 int GCD(int a, int b){
-	while(b!= 0){
-		int r = m % n;
-		m= n;
-		n = r;
-	}
-	return m;
+    int gcd = 1;
+    int k= 2;
+    
+    while(k <= a && k <= b){
+            if (a % k == 0 && b % k == 0)
+               gcd = k;
+            k++;        
+    }
+    return gcd;
 }
