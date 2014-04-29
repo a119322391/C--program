@@ -1,28 +1,68 @@
-// phone.cpp : 定義主控台應用程式的進入點。
-//
-
-#include "stdafx.h"
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #define SIZE 80
-//int _tmain(int argc, _TCHAR* argv[])
-//{
-	//return 0;
-//}
+
 
 int main(void){
 	int i = 0;
 	int c;
+	int count = 0;
 	char *tokenPtr;
-	char string;
+	
+	char *areaNumber;
+	char *areaNumberPtr;
+	double areaNumberToDouble;
+	
+	char *phoneNumber;
+	char *phoneNumberPtr;
+	double phoneNumberPtrDoble;
+	
+	char *front;
+	char *back;
+	
 	char sentence[SIZE];
+	
 	while (i < SIZE - 1 && (c = getchar()) != '\n'){
 		sentence[i++] = c;
 	}
-
+	
 	sentence[i] = '\0';
-	tokenPtr = strtok(string, "");
+	printf("%d\n", count);
+	tokenPtr = strtok(sentence, " ");
 	while (tokenPtr != NULL){
-		printf("%s", tokenPtr);
+		
+		count+= 1;
+		printf("%d\n", count);
+		if(count == 2 || count == 4){
+		      tokenPtr = strtok(NULL, " ");
+		}
+			
 		tokenPtr = strtok(NULL, " ");
+		printf("%s\n", tokenPtr);
+			if(count == 1){
+			areaNumber = tokenPtr;
+			areaNumberToDouble = strtod(areaNumber, &areaNumberPtr);
+			printf("The area number convert to integer is %d\n", (int)areaNumberToDouble);
+		
+		}
+		
+		if(count == 2){		
+			
+			printf("%s\n", tokenPtr);
+			front = tokenPtr;
+			printf("The phone number front is %s\n", front);
+		
+			back = tokenPtr;
+			printf("The phone number back is %s\n", back);
+			
+		}
+		
+	
 	}
+	
+	
+	
+	system("pause");
 }
+	
