@@ -29,17 +29,17 @@ int main(void){
 	
 	sentence[i] = '\0';
 	printf("%d\n", count);
-	tokenPtr = strtok(sentence, " ");
+	tokenPtr = strtok(sentence, " -");
 	while (tokenPtr != NULL){
 		
 		count+= 1;
-		printf("%d\n", count);
+		
 		if(count == 2 || count == 4){
-		      tokenPtr = strtok(NULL, " ");
+		      tokenPtr = strtok(NULL, " -");
 		}
 			
-		tokenPtr = strtok(NULL, " ");
-		printf("%s\n", tokenPtr);
+		tokenPtr = strtok(NULL, " -");
+		
 			if(count == 1){
 			areaNumber = tokenPtr;
 			areaNumberToDouble = strtod(areaNumber, &areaNumberPtr);
@@ -49,18 +49,19 @@ int main(void){
 		
 		if(count == 2){		
 			
-			printf("%s\n", tokenPtr);
+			
 			front = tokenPtr;
-			printf("The phone number front is %s\n", front);
-		
-			back = tokenPtr;
-			printf("The phone number back is %s\n", back);
+			}
+		if( count == 3){
+                  
+                  back = tokenPtr;
 			
 		}
 		
+		
 	
 	}
-	
+	printf("The phone number front is %s%s\n", front,back);
 	
 	
 	system("pause");
