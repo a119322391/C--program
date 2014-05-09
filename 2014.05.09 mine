@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void){
+    int j;
+    int i;
+    int m[12][12] = {0};
+    int mine = 21 + rand()%10;
+    int row; 
+    int colum;
+    
+    for(i=1;i<= mine;i++){
+      
+       row = 1 + rand()%10;
+       colum = 1 + rand()%10;
+       m[row][colum] = 9;
+      
+    }
+     
+    for(i=1;i<=10;i++){
+       for(j=1;j<=10;j++){
+          
+          if(m[i][j] == 9){
+            if(m[i+1][j-1] !=9){
+            m[i+1][j-1]++;}
+            if(m[i+1][j] !=9){
+            m[i+1][j]++;}
+            if(m[i+1][j+1]!=9){
+            m[i+1][j+1]++;}
+            if(m[i][j-1]!=9){
+            m[i][j-1]++;}
+            if(m[i][j+1]!=9){
+            m[i][j+1]++;}
+            if(m[i-1][j-1]!=9){
+            m[i-1][j-1]++;}
+            if(m[i-1][j]!=9){
+            m[i-1][j]++;}
+            if(m[i-1][j+1]!=9){
+            m[i-1][j+1]++;}
+          }
+          }
+       }
+    
+    
+    for(i=1;i<=10;i++){
+       for(j=1;j<=10;j++){
+           if(m[i][j] == 9)
+              printf(" @");
+           else if(m[i][j] == 0)
+              printf(" _");
+           else
+              printf(" %d",m[i][j]);  
+           
+       }            
+       puts(" ");      
+    }
+    
+    system("pause");
+}
