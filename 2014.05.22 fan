@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+enum speeds{fast,medium,slow};
+struct fan{
+	speeds speed;
+	int on ;
+	int radius;
+	char *color;
+};
+
+typedef struct fan FAN;
+char *toString(FAN wfan);
+int main(void){
+	FAN fan1{fast,1,10,"yellow"};
+	FAN fan2{medium,0,5,"blue"};
+	
+	printf("%s\n",toString(fan1));
+	printf("%s",toString(fan2));
+}
+
+char *toString(FAN wfan){
+	static char asd[30];
+	const char *speed[] = {"fast","medium","slow"};
+	if(wfan.on == 1){sprintf(asd,"speed : %s  radius : %d  color : %s ",speed[wfan.speed],wfan.radius,wfan.color);}
+	else{sprintf(asd,"the fan is off radius %d color :%s",wfan.radius,wfan.color);}
+return asd;
+}
