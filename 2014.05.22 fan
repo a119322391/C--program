@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum speeds{fast,medium,slow};
+enum speeds{slow =  1 ,medium,fast};
 struct fan{
 	speeds speed;
 	int on ;
@@ -21,7 +21,7 @@ int main(void){
 
 char *toString(FAN wfan){
 	static char asd[30];
-	const char *speed[] = {"fast","medium","slow"};
+	const char *speed[] = {"","slow","medium","fast"};
 	if(wfan.on == 1){sprintf(asd,"speed : %s  radius : %d  color : %s ",speed[wfan.speed],wfan.radius,wfan.color);}
 	else{sprintf(asd,"the fan is off radius %d color :%s",wfan.radius,wfan.color);}
 return asd;
