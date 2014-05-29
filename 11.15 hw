@@ -1,0 +1,267 @@
+// Fig. 11.15: fig11_15.c
+// Bank-account program reads a random-access file sequentially, 
+// updates data already written to the file, creates new data to 
+// be placed in the file, and deletes data previously in the file.
+#include <stdio.h>
+#include <stdlib.h>
+// clientData structure definition               
+struct person {                              
+   int age ;
+   char lastName[ 15 ]; // account last name     
+   char firstName[ 10 ]; // account first name 
+   int index;  
+}; // end structure clientData                   
+
+// prototypes
+unsigned int enterChoice( void );
+void textFile( FILE *readPtr );
+void updateRecord( FILE *fPtr );
+void newRecord( FILE *fPtr );
+void deleteRecord( FILE *fPtr );
+
+int main( void )
+{ 
+   FILE *cfPtr; // credit.dat file pointer
+   unsigned int choice; // user's choice
+   unsigned int i; // counter used to count from 1-100
+
+   // create clientData with default information       
+   
+   // fopen opens the file; exits if file cannot be opened
+   if ( ( cfPtr = fopen( "nameage.dat", "rb+" ) ) == NULL ) {
+      puts( "File could not be opened." );
+      
+      struct person blankperson = { 0, "", "", 0.0 }; 
+      if ( ( cfPtr = fopen( "nameage.dat", "wb" ) ) == NULL ) {
+         puts( "File could not be written." );
+      } // end if
+      else { 
+      // output 100 blank records to file                              
+         for ( i = 1; i <= 100; ++i ) {                                   
+             fwrite( &blankperson, sizeof( struct person ), 1, cfPtr );
+         } // end for      
+      }                                             
+   } // end if
+   else { 
+      // enable user to specify action
+      while ( ( choice = enterChoice() ) != 5 ) { 
+         switch ( choice ) { 
+            // create text file from record file
+            case 1:
+               textFile( cfPtr );
+               break;
+            // update record
+            case 2:
+               updateRecord( cfPtr );
+               break;
+            // create record
+            case 3:
+               newRecord( cfPtr );
+               break;
+            // delete existing record
+            case 4:
+               deleteRecord( cfPtr );
+               break;
+            // display message if user does not select valid choice
+            default:
+               puts( "Incorrect choice" );
+               break;
+         } // end switch
+      } // end while
+
+      fclose( cfPtr ); // fclose closes the file
+   } // end else
+   system("pause");
+} // end main
+
+// create formatted text file for printing 
+void textFile( FILE *readPtr )
+{ 
+   FILE *writePtr; // accounts.txt file pointer
+   int result; // used to test whether fread read any bytes
+
+   // create clientData with default information
+   struct person blankperson = { 0, "", "", 0 };
+
+   // fopen opens the file; exits if file cannot be opened
+   if ( ( writePtr = fopen( "nameage.txt", "w" ) ) == NULL ) {
+      puts( "File could not be opened." );
+   } // end if
+   else { 
+      rewind( readPtr ); // sets pointer to beginning of file
+      fprintf( writePtr, "%-6s%-16s%-11s%10s\n", 
+         "age", "Last Name", "First Name","index" );
+
+      // copy all records from random-access file into text file
+      while ( !feof( readPtr ) ) { 
+         result = fread(&blankperson, sizeof( struct person ), 1, readPtr);
+
+         // write single record to text file
+         if ( result != 0 && blankperson.index != 0 ) {
+            fprintf( writePtr, "%-6d%-16s%-11s%10d\n",
+               blankperson.age, blankperson.lastName,         
+               blankperson.firstName, blankperson.index );      
+         } // end if
+      } // end while
+
+      fclose( writePtr ); // fclose closes the file
+   } // end else
+} // end function textFile
+
+// update balance in record
+void updateRecord( FILE *fPtr )
+
+{ 
+   unsigned int index; // account number
+   unsigned int transaction; // transaction amount
+
+   // create clientData with no information
+   struct person blankperson = { 0, "", "", 0};
+
+   // obtain number of account to update
+   printf( "%s", "Enter index to update ( 1 - 100 ): " );
+   scanf( "%d", &index );
+
+   // move file pointer to correct record in file              
+   fseek( fPtr, ( index - 1 ) * sizeof( struct person ), 
+      SEEK_SET );                                              
+
+   // read record from file
+   fread( &blankperson, sizeof( struct person ), 1, fPtr );
+
+   // display error if account does not exist
+   if ( blankperson.index == 0 ) {
+      printf( "index #%d has no information.\n", index );
+   } // end if
+   else { // update record
+      printf( "%-6d%-16s%-11s%10d\n\n", 
+         blankperson.index, blankperson.lastName, 
+         blankperson.firstName, blankperson.age );
+      
+      // request transaction amount from user 
+      printf( "%s", "Enter charge ( + ) or payment ( - ): " );
+      scanf( "%d", &transaction );
+      blankperson.age += transaction; // update record balance
+      
+      printf( "%-6d%-16s%-11s%10d\n\n", 
+         blankperson.index, blankperson.lastName, 
+         blankperson.firstName, blankperson.age );
+      
+      // move file pointer to correct record in file              
+      fseek( fPtr, ( index - 1 ) * sizeof( struct person ), 
+         SEEK_SET );                                              
+
+      // write updated record over old record in file         
+      fwrite( &blankperson, sizeof( struct person ), 1, fPtr );
+   } // end else
+} // end function updateRecord
+
+// delete an existing record
+void deleteRecord( FILE *fPtr )
+{ 
+   struct person client; // stores record read from file
+   struct person blankperson = { 0, "", "", 0 }; // blank client
+   
+   unsigned int index; // account number
+
+   // obtain number of account to delete
+   printf( "%s", "Enter account number to delete ( 1 - 100 ): " );
+   scanf( "%d", &index );
+
+   // move file pointer to correct record in file                 
+   fseek( fPtr, ( index - 1 ) * sizeof( struct person ), 
+      SEEK_SET );                                                 
+
+   // read record from file                               
+   fread( &client, sizeof( struct person ), 1, fPtr );
+
+   // display error if record does not exist
+   if ( client.index == 0 ) {
+      printf( "index %d does not exist.\n", index );
+   } // end if
+   else { // delete record
+      // move file pointer to correct record in file                 
+      fseek( fPtr, ( index - 1 ) * sizeof( struct person ), 
+         SEEK_SET );                                                 
+
+      // replace existing record with blank record   
+      fwrite( &blankperson,                          
+         sizeof( struct person ), 1, fPtr );     
+   } // end else
+} // end function deleteRecord
+
+// create and insert record
+void newRecord( FILE *fPtr )
+{ 
+   // create clientData with default information
+   struct person blankperson = { 0, "", "", 0.0 };
+
+   unsigned int index; // account number
+
+   // obtain number of account to create
+   printf( "%s", "Enter new index number ( 1 - 100 ): " );
+   scanf( "%d", &index );
+
+   // move file pointer to correct record in file                 
+   fseek( fPtr, ( index - 1 ) * sizeof( struct person ), 
+      SEEK_SET );                                                 
+
+   // read record from file                               
+   fread( &blankperson, sizeof( struct person ), 1, fPtr );
+
+   // display error if account already exists
+   if ( blankperson.index != 0 ) {
+      printf( "index #%d already contains information.\n",
+         blankperson.index );
+   } // end if
+   else { // create record
+      // user enters last name, first name and balance
+      printf( "%s", "Enter lastname, firstname, age\n? " );
+      scanf( "%14s%9s%d", &blankperson.lastName, &blankperson.firstName, 
+         &blankperson.age );
+
+      blankperson.index = index;
+      
+      // move file pointer to correct record in file   
+      fseek( fPtr, ( blankperson.index - 1 ) *            
+         sizeof( struct person ), SEEK_SET );      
+
+      // insert record in file                       
+      fwrite( &blankperson,                               
+         sizeof( struct person ), 1, fPtr );     
+   } // end else
+} // end function newRecord
+
+// enable user to input menu choice
+unsigned int enterChoice( void )
+{ 
+   unsigned int menuChoice; // variable to store user's choice
+
+   // display available options
+   printf( "%s", "\nEnter your choice\n"
+      "1 - store a formatted text file of index called\n"
+      "    \"nameage.txt\" for printing\n"
+      "2 - update an index\n"
+      "3 - add a new index\n"
+      "4 - delete an index\n"
+      "5 - end program\n? " );
+
+   scanf( "%u", &menuChoice ); // receive choice from user
+   return menuChoice;
+} // end function enterChoice
+
+
+/**************************************************************************
+ * (C) Copyright 1992-2013 by Deitel & Associates, Inc. and               *
+ * Pearson Education, Inc. All Rights Reserved.                           *
+ *                                                                        *
+ * DISCLAIMER: The authors and publisher of this book have used their     *
+ * best efforts in preparing the book. These efforts include the          *
+ * development, research, and testing of the theories and programs        *
+ * to determine their effectiveness. The authors and publisher make       *
+ * no warranty of any kind, expressed or implied, with regard to these    *
+ * programs or to the documentation contained in these books. The authors *
+ * and publisher shall not be liable in any event for incidental or       *
+ * consequential damages in connection with, or arising out of, the       *
+ * furnishing, performance, or use of these programs.                     *
+ *************************************************************************/
