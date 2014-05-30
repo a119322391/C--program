@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+int gcd(int a,int b);
+int main(void){
+    FILE *cfptr;
+    int n,a,b,c,i,temp;
+    if((cfptr = fopen("gcd_input.txt","r")) == NULL){
+       puts("file could not found");
+    }
+    else{
+       fscanf(cfptr,"%d\n%d\n%d\n",&n,&a,&b);
+       temp = gcd(a,b);
+       for(i = 0;i < n-2;i++){
+          fscanf(cfptr,"%d\n",&c);
+          temp = gcd(temp,c);
+       }
+    }
+    fclose(cfptr);
+    if((cfptr = fopen("gcd_output.txt","w")) == NULL){
+       puts("file could not found");
+    }
+    else{
+       fprintf(cfptr,"%d",temp);
+    }
+    fclose(cfptr);
+    system("pause");
+}
+int gcd(int a,int b){
+    int temp;   
+    while(a%b){   
+    
+      temp=a;   
+      a=b;   
+      b=temp%b;              
+     }   
+  return b;  
+}
